@@ -30,20 +30,28 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController iconController = TextEditingController();
-  String? selectedIcon = "";
+  CategoryLabel? selectedIcon;
   // ignore: non_constant_identifier_names
   String _chosen_category = "";
 
   void _updateCategory() {
     setState(() {
-      _chosen_category = selectedIcon.toString();
+      if (selectedIcon != null) {
+        _chosen_category = selectedIcon!.label;
+      } else {
+        _chosen_category = "";
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuEntry<String>> iconEntries =
-        <DropdownMenuEntry<String>>[];
+    final List<DropdownMenuEntry<CategoryLabel>> catEntries =
+        <DropdownMenuEntry<CategoryLabel>>[];
+    for (final CategoryLabel category in CategoryLabel.values) {
+      catEntries.add(DropdownMenuEntry<CategoryLabel>(
+          value: category, label: category.label));
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -53,22 +61,22 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            DropdownMenu<String>(
+            DropdownMenu<CategoryLabel>(
               controller: iconController,
               enableFilter: true,
               leadingIcon: const Icon(Icons.search),
               label: const Text('Category'),
-              dropdownMenuEntries: iconEntries,
+              dropdownMenuEntries: catEntries,
               inputDecorationTheme: const InputDecorationTheme(filled: true),
-              onSelected: (String? icon) {
+              onSelected: (CategoryLabel? cat) {
                 setState(() {
-                  selectedIcon = icon;
+                  selectedIcon = cat;
                 });
               },
             ),
             Text(
-              '$_chosen_category',
-              style: Theme.of(context).textTheme.headline4,
+              _chosen_category,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
@@ -82,11 +90,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-enum CategoryLabel{
+enum CategoryLabel {
   tricots('Tricots'),
   pantalons('Pantalons'),
   chaussures('Chaussures');
 
   final String label;
-  const CategoryLabel(this.label)
+  const CategoryLabel(this.label);
 }

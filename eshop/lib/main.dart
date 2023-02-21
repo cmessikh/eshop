@@ -30,14 +30,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController iconController = TextEditingController();
-  CategoryLabel? selectedIcon;
+  CategoryLabel? selectedCategory;
   // ignore: non_constant_identifier_names
   String _chosen_category = "";
 
   void _updateCategory() {
     setState(() {
-      if (selectedIcon != null) {
-        _chosen_category = selectedIcon!.label;
+      if (selectedCategory != null) {
+        _chosen_category = selectedCategory!.label;
       } else {
         _chosen_category = "";
       }
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               inputDecorationTheme: const InputDecorationTheme(filled: true),
               onSelected: (CategoryLabel? cat) {
                 setState(() {
-                  selectedIcon = cat;
+                  selectedCategory = cat;
                 });
               },
             ),
